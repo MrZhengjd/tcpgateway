@@ -1,0 +1,5 @@
+FROM java:8
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ADD /gateway-1.0-SNAPSHOT.jar gateway-1.0-SNAPSHOT.jar
+RUN bash -c 'touch ./gateway-1.0-SNAPSHOT.jar'
+ENTRYPOINT ["java","-jar","gateway-1.0-SNAPSHOT.jar"]

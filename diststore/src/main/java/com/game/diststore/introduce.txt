@@ -1,0 +1,35 @@
+这里主要做的简单的分布式共识实现
+
+1.分为三个角色 master slave recorder
+master slave 主要负责记录事件 都是用write - ahead log记录来做的
+recorder     主要是记录master改变的事件 master改变之后就会改变recorder手里的log
+添加recorder的主要功能是master 每次去写的时候都去recorder校验一下自己是不是master
+不能链接recorder 就不能写   自己不是master 也不能写 （可以解决分区的问题）
+还可以再恢复的时候根据recorder 选master的记录来恢复
+
+还有个问题就是recorder 需不需要确认master 的写入成功
+如果不确认 因为master收到recorder 的确认后自己写入 slavecopy数据也是要从master复制，master上面有多少就
+复制多少 如果这个时候发生master切换 切换的slave也要保证和最新的operate一样，肯定就会不一致了（所以需要master重启
+，然后复制玩消息，但是宕机不可能那么快恢复的），这样的结果
+就是谁都不能当master，也可以不管不用保证是最新的operateId，但是后面写入的operateId一定要大于之前的operateId
+需要从原来的master拷贝数据，怎么同步也是个问题 （recorder记录了一份记录了一粉master改变记录，可以通过这个来做到）
+
+
+如果确认 master 的并发写入问题：同时大量写入请求 只能是排队一个一个的写入成功，并发量不大
+如果要做到高并发 拆分成两个operateId 一个是startOperateId 一个是confirmOperateId
+如果master返回的confirmOperate乱序了 还按照谁当前写入比上一个大的规则吗
+一种办法是不管他，当master最终一定完成 所以需要master添加一个定时器，定时检测已写入还没
+确认的，从新发送请求到confirm里面去最终完成，并且recorder需要记录这个还没完成operateId
+就算master发生切换，如果master宕机了 recorder需要把里面还没完成数据清理了
+假设后面master又恢复了（两个情况，没有保存数据和保存数据），没有保存不需要重做这个
+保存了需要需要去重做完成
+
+
+
+并且recorder有个选master的功能  recorder 再发现连不了master后的10秒之后就开始自动选主
+
+master-slave 的复制功能  master能修改再recorder打记录，就当master写入成功
+然后master写入ahead-log
+
+slave 复制的时候先去查看recorder里面的master 记录，复制的时候根据对应的masterid去获取数据
+slave的复制采取的是自己请求master的记录，然后自己重现

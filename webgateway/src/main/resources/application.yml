@@ -1,0 +1,58 @@
+nacos:
+  discovery:
+    server-addr: 127.0.0.1:8848
+  config:
+    server-addr: 127.0.0.1:8848
+spring :
+  cloud:
+    gateway:
+      ## 配置允许跨域
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+      ## 路由器定义
+      routes:
+        - id: baidu
+          uri: https://www.baidu.com
+          predicates:
+            - Path=/baidu/**
+          filters:
+            - StripPrefix=1
+        - id: user
+          uri: http://localhost:8080/
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+        - id: sina
+          uri: http://www.sina.com.cn/
+          predicates:
+            - Path=/sina/**
+          filters:
+            - StripPrefix=1
+
+  #  cloud:
+#    consul :
+#      host : localhost
+#      port: 8500
+#      discovery:
+#        port: 12345
+#        instance-id: ${spring.application.name}:12345
+#        prefer-ip-address: true
+#        ip-address: 127.0.0.1
+#        register: true   #将游戏网关做为服务节点，注册到Consul上面。
+#        service-name: chat  #注册到Consul上面的服务名称，用于区分此服务是否为游戏网关
+#        health-check-critical-timeout: 30s
+
+server:
+  port: 8088
+com:
+  game:
+    webgateway:
+      filterUrlPaths:
+        - /baidu
+        - /user

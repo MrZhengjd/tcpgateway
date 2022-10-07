@@ -1,0 +1,67 @@
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    restart: always
+    ports:
+      - 2181:2181
+  kafka:
+    image: wurstmeister/kafka
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    environment:
+      TZ: Asia/Shanghai
+      KAFKA_BROKER_ID: 0
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://10.0.8.17:9092
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  redis:
+    image: redis
+    ports:
+      - 16379:6379
+    container_name: redis
+    volumes:
+      - ./components/redis/data:/data
+      #redis config file
+      - ./components/redis/config/redis.conf:/usr/local/redis/config/redis.conf
+    environment:
+      TZ: Asia/Shanghai
+    restart: always
+    sysctls:
+      net.core.somaxconn: 1024
+    command: redis-server --requirepass gateway --appendonly yes
+  nacos:
+    image: nacos/nacos-server:v2.1.0
+    ports:
+      - 8848:8848
+    restart: always
+    container_name: nacos
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 13306:3306
+      - 23306:33060
+    container_name: mysql
+    volumes:
+      - ./components/mysql/data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime
+    environment:
+      MYSQL_ROOT_PASSWORD: openIM
+    restart: always
+  gateway:
+    build:
+      dockerfile: DockerFile
+      context: .
+    image: gateway:1
+    depends_on:
+      - redis
+      - kafka
+      - zookeeper
+      - nacos

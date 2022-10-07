@@ -1,0 +1,21 @@
+
+spring :
+
+  application:
+    name: gateway
+#  cloud:
+#    consul :
+#      host : localhost
+#      port: 8500
+#      discovery:
+#        port: 12345
+#        instance-id: ${spring.application.name}:12345
+#        prefer-ip-address: true
+#        ip-address: 127.0.0.1
+#        register: true   #将游戏网关做为服务节点，注册到Consul上面。
+#        service-name: chat  #注册到Consul上面的服务名称，用于区分此服务是否为游戏网关
+#        health-check-critical-timeout: 30s
+  main:
+    web-application-type: none
+server:
+  port: 8085

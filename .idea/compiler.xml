@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="BUILD_PROCESS_HEAP_SIZE" value="1024" />
+    <option name="USE_RELEASE_OPTION" value="false" />
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="auth" />
+        <module name="mjai" />
+        <module name="infrastructure" />
+        <module name="consumemodel" />
+        <module name="gateway" />
+        <module name="webgateway" />
+        <module name="test" />
+        <module name="diststore" />
+        <module name="gamelogic" />
+        <module name="waitstart" />
+        <module name="domain" />
+        <module name="network" />
+        <module name="redissiontest" />
+        <module name="common" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="auth" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="consumemodel" options="-parameters" />
+      <module name="diststore" options="-parameters" />
+      <module name="domain" options="-parameters" />
+      <module name="gamelogic" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="infrastructure" options="-parameters" />
+      <module name="mjai" options="-parameters" />
+      <module name="network" options="-parameters" />
+      <module name="redissiontest" options="-parameters" />
+      <module name="tcpgateway" options="" />
+      <module name="test" options="-parameters" />
+      <module name="waitstart" options="-parameters" />
+      <module name="webgateway" options="-parameters" />
+    </option>
+  </component>
+</project>

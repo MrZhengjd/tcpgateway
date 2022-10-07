@@ -1,0 +1,6 @@
+FROM java:8
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ADD /diststore-1.0-SNAPSHOT.jar diststore-1.0-SNAPSHOT.jar
+RUN bash -c 'touch ./diststore-1.0-SNAPSHOT.jar'
+EXPOSE 13231
+ENTRYPOINT ["java","-jar","diststore-1.0-SNAPSHOT.jar"]

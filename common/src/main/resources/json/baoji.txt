@@ -1,0 +1,52 @@
+{
+    "additionScores": [
+		{
+            "calType": 1,
+            "checkCondition": "defaultCheckCondition",
+            "order": 0,
+            "score": 0,
+			"build": "diFanBuildScore"
+        },
+		{
+            "calType": 0,
+            "checkCondition": "defaultCheckCondition",
+            "order": 1,
+            "score": 0,
+			"build": "xiAnXiaZhuBuildScore"
+        },
+		{
+            "calType": 2,
+            "checkCondition": "fengDing",
+            "order": 2,
+            "score": 0,
+			"build": "fengDingBuildScore"
+        },
+    ],
+    "calType": 1,
+	"afterHuList": [
+	],
+	"beforeHuList": [
+	],
+	"gangScores":[
+		"calDefaultGangScore",
+		"multDiFanGangScore"
+	],
+	"checkTings":[
+        "isPingHu",
+        "isQiXiaoDui"
+	],
+    "checkHuList": [
+		"pingHuCheckAndModify"
+    ],
+	"checkNeedCal": "defaultNeedCal",
+    "daHuDieJia": true,
+    "scoreMap": {
+		"isSevenPairs": 3.0,
+		"isPengPengHu": 3.0,
+		"isQiangGangHu": 3.0,
+		"isGangShangKaiHua": 3.0,
+		"isZiMoHu": 2.0,
+		"isDianPaoHu": 3.0,
+		"isPingHu":1.0
+    }
+}
